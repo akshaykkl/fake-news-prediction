@@ -52,3 +52,28 @@ if 'model' not in st.session_state:
 user_input = st.text_area("Input Text:", 
                          height=200,
                          placeholder="Paste news article or text snippet here...")
+
+
+# Prediction button
+if st.button("Analyze Text"):
+    if not user_input.strip():
+        st.warning("⚠️ Please enter some text")
+    else:
+        with st.spinner("Analyzing..."):
+            # Simulate processing time for demonstration
+            time.sleep(1.5)  # Remove in actual implementation
+            
+            # Get prediction
+            label, confidence = predict(user_input, st.session_state.model)
+            
+            # Display results
+            st.subheader("Prediction Result")
+            
+            if label == "real":
+                st.success(f"✅ This text is REAL (Confidence: {confidence:.0%})")
+                st.markdown("Characteristics of real content:")
+                st.markdown("- 🔍 Fact-based information  \n- 📚 Verifiable sources  \n- 🧠 Logical consistency")
+            else:
+                st.error(f"❌ This text is FAKE (Confidence: {confidence:.0%})")
+                st.markdown("Warning signs detected:")
+                st.markdown("- ⚠️ Emotional language  \n- 🔥 Inflammatory claims  \n- 🌐 Lack of credible sources")
