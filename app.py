@@ -77,3 +77,21 @@ if st.button("Analyze Text"):
                 st.error(f"❌ This text is FAKE (Confidence: {confidence:.0%})")
                 st.markdown("Warning signs detected:")
                 st.markdown("- ⚠️ Emotional language  \n- 🔥 Inflammatory claims  \n- 🌐 Lack of credible sources")
+
+
+# Add some explanations
+st.markdown("---")
+st.markdown("### How it works:")
+st.markdown("""
+1. Enter news text or any content snippet
+2. Our AI analyzes linguistic patterns and content markers
+3. Classification is made based on trained detection models
+""")
+
+st.markdown("### Model capabilities:")
+st.markdown("""
+- Detects synthetic/manipulated content
+- Identifies propaganda techniques
+- Flags suspicious linguistic patterns
+- Recognizes trustworthy source indicators
+""")
