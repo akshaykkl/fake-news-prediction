@@ -33,3 +33,22 @@ def predict(text, model):
     if any(keyword in text.lower() for keyword in fake_keywords):
         return ("fake", 0.85)
     return ("real", 0.92)
+
+# Load model with caching
+@st.cache_resource
+def get_model():
+    return load_model()
+
+# Streamlit app
+st.title("📰 Real/Fake News Classifier")
+st.subheader("Enter text to check if it's authentic or fabricated")
+
+# Initialize session state
+if 'model' not in st.session_state:
+    with st.spinner("Loading AI model..."):
+        st.session_state.model = get_model()
+
+# Text input area
+user_input = st.text_area("Input Text:", 
+                         height=200,
+                         placeholder="Paste news article or text snippet here...")
