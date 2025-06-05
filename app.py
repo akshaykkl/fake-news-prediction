@@ -95,7 +95,8 @@ st.markdown("""
 - Flags suspicious linguistic patterns
 - Recognizes trustworthy source indicators
 yeah does that
-            that too
+
+- Provides confidence scores for predictions
 
 
 """)
