@@ -96,6 +96,6 @@ st.markdown("""
 - Recognizes trustworthy source indicators
 yeah does that
             that too
-            and that too
+
 
 """)
