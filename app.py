@@ -91,7 +91,5 @@ st.markdown("""
 st.markdown("### Model capabilities:")
 st.markdown("""
 - Detects synthetic/manipulated content
-- Identifies propaganda techniques
-- Flags suspicious linguistic patterns
 
 """)
