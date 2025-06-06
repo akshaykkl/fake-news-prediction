@@ -94,6 +94,5 @@ st.markdown("""
 - Identifies propaganda techniques
 - Flags suspicious linguistic patterns
 - Recognizes trustworthy source indicators
-            
-            
+
 """)
