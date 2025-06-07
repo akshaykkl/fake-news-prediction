@@ -85,7 +85,7 @@ st.markdown("### How it works:")
 st.markdown("""
 1. Enter news text or any content snippet
 2. Our AI analyzes linguistic patterns and content markers
-3. Classification is made based on trained detection models
+
 """)
 
 st.markdown("### Model capabilities:")
