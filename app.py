@@ -83,8 +83,8 @@ if st.button("Analyze Text"):
 st.markdown("---")
 st.markdown("### How it works:")
 st.markdown("""
-1. Enter news text or any content snippet
-
+This app uses a machine learning model to classify news articles or text snippets as either **REAL** or **FAKE**.
+The model analyzes the text for patterns and characteristics commonly associated with authentic or fabricated content.
 
 """)
 
