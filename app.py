@@ -5,13 +5,16 @@ import string
 import contractions
 import emoji
 import numpy as np
+import pickle
+import tensorflow as tf
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 import nltk
 import warnings
 
-# Suppress sklearn warnings
+# Suppress warnings
 warnings.filterwarnings("ignore", category=UserWarning)
+tf.get_logger().setLevel('ERROR')
 
 # Initialize NLTK with error handling
 def initialize_nltk():
@@ -28,7 +31,7 @@ def initialize_nltk():
 
 initialize_nltk()
 
-# Initialize preprocessing tools with error handling
+# Initialize preprocessing tools
 try:
     stop_words = set(stopwords.words('english'))
     lemmatizer = WordNetLemmatizer()
@@ -36,6 +39,7 @@ except Exception as e:
     st.error(f"Failed to initialize NLP tools: {str(e)}")
     st.stop()
 
+# Text cleaning function
 def clean_text_advanced(text):
     try:
         text = str(text).lower()
@@ -54,43 +58,75 @@ def clean_text_advanced(text):
         st.error(f"Text cleaning failed: {str(e)}")
         return ""
 
+# Load models with caching
 @st.cache_resource
-def load_models():
+def load_traditional_model():
     try:
         model = joblib.load('model/baseline_model.joblib')
         vectorizer = joblib.load('model/tfidf_vectorizer.joblib')
-        
-        # Verify vectorizer is properly loaded
         if not hasattr(vectorizer, 'transform'):
             raise ValueError("Vectorizer is not properly initialized")
-            
         return model, vectorizer
     except Exception as e:
-        st.error(f"Model loading error: {str(e)}")
+        st.error(f"Traditional model loading error: {str(e)}")
         st.stop()
 
-def predict(text, model, vectorizer):
+@st.cache_resource
+def load_dnn_model():
+    try:
+        model = tf.keras.models.load_model('model/tf_text_classifier.keras')
+        with open('model/tokenizer.pickle', 'rb') as handle:
+            tokenizer = pickle.load(handle)
+        return model, tokenizer
+    except Exception as e:
+        st.error(f"DNN model loading error: {str(e)}")
+        st.stop()
+
+# Prediction functions
+def predict_traditional(text, model, vectorizer):
     try:
         cleaned_text = clean_text_advanced(text)
         if not cleaned_text.strip():
             raise ValueError("Text is empty after preprocessing")
-            
         features = vectorizer.transform([cleaned_text])
         prediction = model.predict(features)[0]
         proba = model.predict_proba(features)[0]
         return prediction, proba
     except Exception as e:
-        raise ValueError(f"Prediction failed: {str(e)}")
+        raise ValueError(f"Traditional prediction failed: {str(e)}")
 
+def predict_dnn(text, model, tokenizer, max_len=200):
+    try:
+        cleaned_text = clean_text_advanced(text)
+        if not cleaned_text.strip():
+            raise ValueError("Text is empty after preprocessing")
+        sequence = tokenizer.texts_to_sequences([cleaned_text])
+        padded = tf.keras.preprocessing.sequence.pad_sequences(sequence, maxlen=max_len, padding='post')
+        proba = model.predict(padded, verbose=0)[0][0]
+        prediction = 1 if proba >= 0.5 else 0
+        return prediction, [1-proba, proba]  # [fake_prob, real_prob]
+    except Exception as e:
+        raise ValueError(f"DNN prediction failed: {str(e)}")
+
+# Main app
 def main():
     st.set_page_config(page_title="Real/Fake News Detector", page_icon="📰")
     st.title("📰 Real/Fake News Classifier")
     
-    # Load models
-    model, vectorizer = load_models()
+    # Model selection
+    model_type = st.radio("Select Model Type:",
+                         ("Traditional (TF-IDF + Classifier)", "Deep Neural Network"),
+                         index=0)
+    
+    # Load the selected model
+    if model_type == "Traditional (TF-IDF + Classifier)":
+        model, processor = load_traditional_model()
+    else:
+        model, processor = load_dnn_model()
     
     # User input
-    user_input = st.text_area("Paste news article text here:", height=200, 
+    user_input = st.text_area("Paste news article text here:", 
+                            height=200,
                             placeholder="Enter the news content you want to analyze...")
     
     if st.button("Analyze Text"):
@@ -99,32 +135,35 @@ def main():
         else:
             with st.spinner("Analyzing content..."):
                 try:
-                    prediction, proba = predict(user_input, model, vectorizer)
+                    if model_type == "Traditional (TF-IDF + Classifier)":
+                        prediction, proba = predict_traditional(user_input, model, processor)
+                    else:
+                        prediction, proba = predict_dnn(user_input, model, processor)
                     
-                    # Display results - NOTE: Now 1=Real, 0=Fake
+                    # Display results
                     st.subheader("Analysis Results")
                     
                     col1, col2 = st.columns(2)
                     with col1:
-                        # Changed to match your labeling scheme
                         label = "REAL ✅" if prediction == 1 else "FAKE ❌"
                         confidence = proba[1] if prediction == 1 else proba[0]
-                        st.metric("Prediction", value=label, delta=f"{confidence:.1%} confidence")
+                        st.metric("Prediction", 
+                                 value=label,
+                                 delta=f"{confidence:.1%} confidence")
                     
                     with col2:
-                        # Progress bar shows confidence in the predicted class
                         st.progress(confidence)
                         st.caption(f"Real probability: {proba[1]:.1%} | Fake probability: {proba[0]:.1%}")
                     
-                    # Show explanation - updated to match your labels
-                    if prediction == 1:  # Real
+                    # Show explanation
+                    if prediction == 1:
                         st.success("""
                         **Authentic Content Indicators**
                         - Fact-based statements
                         - Verifiable sources
                         - Balanced perspective
                         """)
-                    else:  # Fake
+                    else:
                         st.warning("""
                         **Warning: Potential Fake Content Detected**
                         - Emotional or exaggerated language
