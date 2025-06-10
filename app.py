@@ -144,16 +144,17 @@ def main():
                     st.subheader("Analysis Results")
                     
                     col1, col2 = st.columns(2)
+                    col1, col2 = st.columns(2)
                     with col1:
-                        label = "REAL ✅" if prediction == 1 else "FAKE ❌"
-                        confidence = proba[1] if prediction == 1 else proba[0]
-                        st.metric("Prediction", 
-                                 value=label,
-                                 delta=f"{confidence:.1%} confidence")
-                    
+                        st.metric("Real Probability", value=f"{proba[1]:.1%}")
+                        st.metric("Fake Probability", value=f"{proba[0]:.1%}")
+
                     with col2:
-                        st.progress(confidence)
-                        st.caption(f"Real probability: {proba[1]:.1%} | Fake probability: {proba[0]:.1%}")
+                        st.progress(float(proba[1]))  # Progress bar for real probability
+                        st.caption(f"Real probability: {proba[1]:.1%}")
+                        st.progress(float(proba[0]))  # Progress bar for fake probability
+                        st.caption(f"Fake probability: {proba[0]:.1%}")
+
                     
                     # Show explanation
                     if prediction == 1:
