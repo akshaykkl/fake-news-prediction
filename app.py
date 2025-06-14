@@ -167,7 +167,7 @@ def main():
                     else:
                         st.warning("""
                         **Warning: Potential Fake Content Detected**
-                        - Emotional or exaggerated language
+                        - Exaggerated language
                         - Lack of credible sources
                         - Inconsistent claims
                         """)
