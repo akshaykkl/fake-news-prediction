@@ -175,7 +175,7 @@ def main():
                         
                 except Exception as e:
                     st.error(f"Analysis failed: {str(e)}")
-                    st.info("Try entering a longer text with more meaningful content")
+                    st.info("Try entering a longer text with more meaningful context")
 
 if __name__ == "__main__":
     main()
