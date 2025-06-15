@@ -62,7 +62,7 @@ def clean_text_advanced(text):
 @st.cache_resource
 def load_traditional_model():
     try:
-        model = joblib.load('model/baseline_model.joblib')
+        model = joblib.load('model/logistic_model.joblib')
         vectorizer = joblib.load('model/tfidf_vectorizer.joblib')
         if not hasattr(vectorizer, 'transform'):
             raise ValueError("Vectorizer is not properly initialized")
@@ -74,7 +74,7 @@ def load_traditional_model():
 @st.cache_resource
 def load_dnn_model():
     try:
-        model = tf.keras.models.load_model('model/tf_text_classifier.keras')
+        model = tf.keras.models.load_model('model/sequential_model.keras')
         with open('model/tokenizer.pickle', 'rb') as handle:
             tokenizer = pickle.load(handle)
         return model, tokenizer
