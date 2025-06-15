@@ -121,7 +121,7 @@ You can enter a news headline or content and choose a model for prediction.
 Contributions are welcome! Feel free to submit an issue or pull request.
 
 ---
-
+<!--
 ## 📜 License
 
-Licensed under the MIT License. See `LICENSE` for details.
+Licensed under the MIT License. See `LICENSE` for details. -->
