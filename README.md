@@ -26,8 +26,9 @@ A Streamlit web application that detects fake news using both Logistic Regressio
 │   ├── tfidf_vectorizer.joblib
 │   └── tokenizer.pickle
 ├── data/                   # Training datasets
-│   ├── fake_news_dataset.csv
-│   └── indian_fake_news.csv
+│   ├── True.csv
+│   └── Fake.csv
+│   └── news_dataset.csv
 ├── notebook/              # Jupyter notebooks for analysis
 │   ├── Study.ipynb
 ├── requirements.txt        # Python dependencies
