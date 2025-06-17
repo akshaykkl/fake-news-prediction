@@ -112,7 +112,7 @@ You can enter a news headline or content and choose a model for prediction.
 ## 🧪 Suggested Additions
 
 - Add GIF/screen recording of app in action
-- Include screenshots of UI
+
 - Show confusion matrices and sample predictions in the notebooks
 
 ---
