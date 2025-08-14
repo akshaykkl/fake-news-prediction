@@ -10,7 +10,6 @@ A Streamlit web application that detects fake news using both Logistic Regressio
   - Logistic Regression with TF-IDF vectorization
   - TensorFlow Sequential model with Conv1D + BiLSTM
 - **Probability-based outputs** showing likelihood of news being fake or real
-- **Trained on multiple datasets** for better generalization
 - **Interactive UI** with a clean layout using Streamlit
 
 ---
@@ -112,7 +111,6 @@ You can enter a news headline or content and choose a model for prediction.
 ## 🧪 Suggested Additions
 
 - Add GIF/screen recording of app in action
-
 - Show confusion matrices and sample predictions in the notebooks
 
 ---
