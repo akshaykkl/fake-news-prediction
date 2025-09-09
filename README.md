@@ -113,6 +113,7 @@ You can enter a news headline or content and choose a model for prediction.
 - Add GIF/screen recording of app in action
 - Show confusion matrices and sample predictions in the notebooks
 - on round new system of prediction
+- on work with welfake datasets
 
 ---
 
