@@ -96,6 +96,10 @@ You can enter a news headline or content and choose a model for prediction.
   - Balanced dataset labeled as REAL or FAKE
 - **Indian Fake News Dataset** (Kaggle)
   - Focuses on Indian context, includes regional samples
+- **WelFake Dataset** 
+  - Dataset combining many ones
+- **FakeNewsNet** (Kaggle)
+  - Focuses on details like tweets etc..
 
 ---
 
